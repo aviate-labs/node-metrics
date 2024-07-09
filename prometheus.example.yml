@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+scrape_configs:
+  - job_name: "hostos"
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: /metrics/hostos_node_exporter
+    static_configs:
+      - targets:
+          - "[2001:920:401a:1706:6800:46ff:fe0b:1f94]:42372"
+  - job_name: "guestos"
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    metrics_path: /metrics/guestos_node_exporter
+    static_configs:
+      - targets:
+          - "[2001:920:401a:1706:6800:46ff:fe0b:1f94]:42372"
