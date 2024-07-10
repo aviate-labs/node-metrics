@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type NodeDetails struct {
@@ -97,8 +98,16 @@ func main() {
 
 	var addresses []map[string]any
 	for _, n := range nodeProvider {
+		octets := strings.SplitAfter(n.IPv6, ":")
+		if !strings.HasPrefix(octets[4], "6801") {
+			log.Printf("Skipping node %q with IPv6 address %q.\n", n.ID, n.IPv6)
+			continue
+		}
+
+		octets[4] = "6800:"
+		hostOSIPv6 := strings.Join(octets, "")
 		addresses = append(addresses, map[string]any{
-			"targets": []string{fmt.Sprintf("[%s]:42372", n.IPv6)},
+			"targets": []string{fmt.Sprintf("[%s]:42372", hostOSIPv6)},
 			"labels": map[string]string{
 				"id": n.ID,
 				"np": *nodeProviderID,

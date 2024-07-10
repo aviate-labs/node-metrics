@@ -15,7 +15,7 @@ scrape_configs:
     scheme: https
     tls_config:
       insecure_skip_verify: true
-    metrics_path: /metrics/guestos_node_exporter
+    metrics_path: /metrics/guestos_replica
     static_configs:
       - targets:
           - "[2001:920:401a:1706:6800:46ff:fe0b:1f94]:42372"
