@@ -1,0 +1,40 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - <your-ip>:9093    # or localhost:9093 
+
+rule_files:
+  - "instance_down_rules.yml"
+
+scrape_configs:
+- job_name: hostos
+  honor_timestamps: true
+  scrape_interval: 30s
+  scrape_timeout: 10s
+  metrics_path: /metrics/hostos_node_exporter
+  scheme: https
+  tls_config:
+    insecure_skip_verify: true
+  follow_redirects: true
+  enable_http2: true
+  static_configs:
+  - targets:
+    - '[2001:920:401a:1708:6800:8dff:fe6c:7e2a]:42372'
+- job_name: guestos
+  honor_timestamps: true
+  scrape_interval: 30s
+  scrape_timeout: 10s
+  metrics_path: /metrics/guestos_node_exporter
+  scheme: https
+  tls_config:
+    insecure_skip_verify: true
+  follow_redirects: true
+  enable_http2: true
+  static_configs:
+  - targets:
+    - '[2001:920:401a:1708:6800:8dff:fe6c:7e2a]:42372'
