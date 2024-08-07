@@ -143,4 +143,4 @@ Add or modify the configuration to include IPv6 settings, then apply the changes
 sudo netplan apply
 ```
 
-Following these steps, you will have a fully functioning Prometheus setup to monitor node metrics efficiently.
+Following these steps, you will have a fully functioning Prometheus setup to monitor node metrics efficiently. You can now procede to [alertmanager-matrix-config.md](./alertmanager-matrix-config.md) to setup Alertmanager and receive alerts using the public node metrics.

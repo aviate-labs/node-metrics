@@ -1,4 +1,5 @@
 # Alertmanager
+Alertmanager is a tool that manages alerts from Prometheus, ensuring important notifications reach the right people. It helps organize and send alerts to channels like email or Slack. This guide will demonstrate how it can be set up with [Matrix](https://matrix.org/).
 
 ## Prerequisites
 
