@@ -326,6 +326,6 @@ Restart the `alertmanager` service
 ```bash
 sudo systemctl restart alertmanager
 ```
-
+Now, you should have successfully setup Alertmanager to work with Prometheus, and it should be able to send alerts via Matrix.
 ### References
 - [Metio's Matrix Alertmanager receiver](https://github.com/metio/matrix-alertmanager-receiver?tab=readme-ov-file#configuration)
