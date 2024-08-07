@@ -241,65 +241,7 @@ cp config.sample.yaml config.yaml
 sudo nano config.yaml
 ```
 
-Enter the details collected from element into the configuration file. Below is a minimal example:
-
-```yaml
-# configuration of the HTTP server
-http:
-  port: <port-on-your-instance> # e.g. 12345
-
-# configuration for the Matrix connection
-matrix:
-  homeserver-url: "<your-homeserver-url>" # e.g. https://matrix-client.matrix.org
-  user-id: "<your-bot-user-id>" # e.g. @some-username:matrix.org
-  access-token: "<your-bot-access-token>" # e.g. syt_abc... 
-  room-mapping:
-	  simple-name: "<your-room-id>" # e.g. !qohfwef7qwerf:example.com
-# configuration of templating features
-templating:
-  external-url-mapping:
-    "alertmanager:9093": https://alertmanager.example.com
-  computed-values:
-    - values:
-        color: white
-    - values:
-        color: orange
-      when-matching-labels:
-        severity: warning
-    - values:
-        color: red
-      when-matching-labels:
-        severity: critical
-    - values:
-        color: limegreen
-      when-matching-status: resolved
-  firing-template: '
-    <p>
-      <strong><font color="{{ .ComputedValues.color }}">{{ .Alert.Status | ToUpper }}</font></strong>
-      {{ if .Alert.Labels.name }}
-        {{ .Alert.Labels.name }}
-      {{ else if .Alert.Labels.alertname }}
-        {{ .Alert.Labels.alertname }}
-      {{ end }}
-      >>
-      {{ if .Alert.Labels.severity }}
-        {{ .Alert.Labels.severity | ToUpper }}:
-      {{ end }}
-      {{ if .Alert.Annotations.description }}
-        {{ .Alert.Annotations.description }}
-      {{ else if .Alert.Annotations.summary }}
-        {{ .Alert.Annotations.summary }}
-      {{ end }}
-      >>
-      {{ if .Alert.Annotations.runbook }}
-        <a href="{{ .Alert.Annotations.runbook }}">Runbook</a> |
-      {{ end }}
-      {{ if .Alert.Annotations.dashboard }}
-        <a href="{{ .Alert.Annotations.dashboard }}">Dashboard</a> |
-      {{ end }}
-      <a href="{{ .SilenceURL }}">Silence</a>
-    </p>'
-```
+Enter the details collected from element into the configuration file. See [matrix-rx-config.example.yml](./matrix-rx-config.example.yml) for a minimal example:
 
 For full details on each key in the `config.yaml` file, please refer to the [repository’s documentation](https://github.com/metio/matrix-alertmanager-receiver?tab=readme-ov-file#configuration).
 
@@ -376,45 +318,13 @@ Open the `alertmanager.yml` file
 sudo nano /etc/alertmanager/alertmanager.yml
 ```
 
-Add the routes and receivers to the file. Here is an example
-
-```bash
-global:
-  resolve_timeout: 5m
-  
-route:
-  group_by: ['alertname']
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 1h
-  receiver: 'web.hook'
-  routes:
-    - match:
-        webhook_url: 'test-alertmanager'
-      group_by: ['alertname']
-      group_wait: 10s
-      group_interval: 10s
-      repeat_interval: 15s
-      receiver: 'matrix'
-
-receivers:
-  - name: 'web.hook'
-    webhook_configs:
-      - url: 'http://127.0.0.1:5001/'
-  - name: 'matrix'
-    webhook_configs:
-      - url: 'http://167.99.39.150:12345/alerts/simple-name'
-
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'dev', 'instance']
-```
+Add the routes and receivers to the file. See [alertmanager.example.yml](./alertmanager.example.yml) for an example. 
 
 Restart the `alertmanager` service
 
 ```bash
 sudo systemctl restart alertmanager
 ```
+
+### References
+- [Metio's Matrix Alertmanager receiver](https://github.com/metio/matrix-alertmanager-receiver?tab=readme-ov-file#configuration)
